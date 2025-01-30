@@ -13,8 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    {{ __('You are logged in!') }}
+                    <product-table-component></product-table-component>
                 </div>
             </div>
         </div>

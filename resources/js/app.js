@@ -1,6 +1,8 @@
+import './bootstrap';
 import { createApp } from 'vue';
-import ExampleComponent from './components/ExampleComponent.vue';
+import ProductTableComponent from './components/Product/ProductTableComponent.vue';
 
 const app = createApp({});
-app.component('example-component', ExampleComponent);
+app.component('product-table-component', ProductTableComponent);
+
 app.mount('#app');
