@@ -4,7 +4,8 @@ export default {
     data() {
         return {
             products: [],
-            isProductEditing: {}
+            isProductEditing: {},
+            isAdmin :null
         }
     },
     methods: {
@@ -25,6 +26,19 @@ export default {
                     })
                 })
         },
+        getPermission() {
+            axios.get('/get-permission', {
+                withCredentials: true
+            })
+                .then(res => {
+                    console.log(res)
+                    if (res.data === 0) {
+                        this.isAdmin = false
+                    } else {
+                        this.isAdmin = true
+                    }
+                })
+        },
         changeData(id) {
             Object.keys(this.isProductEditing).forEach(key => {
                 if(+key===id)
@@ -42,20 +56,36 @@ export default {
     },
     mounted() {
         this.getProductList()
+        this.getPermission()
     }
 }
 </script>
 
 <template>
+    <div v-if="isAdmin"><h1>Вы админ</h1> <h2>и можете редактировать категорию товара</h2></div>
+    <div v-if="!isAdmin&&isAdmin!==null"><h1>Вы НЕ админ</h1> <h2>категори менять нельзя</h2></div>
     <div class="product-cards">
         <div class="product-card" v-for="product in products" :key="product.id">
             <img :src="product.url_image" alt="Product image" class="product-image">
             <div class="product-info">
                 <h3>{{ product.name }}</h3>
-                <p><strong>Категория:</strong>{{ product.article }}<input style="display: none"></p>
-                <p><strong>Цвет:</strong> {{ product.data.color }}<input style="display: none"></p>
+                <p v-if="!isAdmin&&isAdmin!==null"><strong>Категория:</strong>{{ product.article }}</p>
+                <p v-if="isAdmin">
+                    <strong>Категория:</strong>
+                    <span v-if="!isProductEditing[product.id]">{{ product.article }}</span>
+                    <br>
+                    <input v-if="isProductEditing[product.id]" v-model="product.article"
+                           value="{{ product.article }}">
+                </p>
+                <p><strong>Цвет:</strong>
+                    <span v-if="!isProductEditing[product.id]">{{ product.data.color }}</span>
+                    <br>
+                    <input v-if="isProductEditing[product.id]" v-model="product.data.color"
+                           value="{{ product.data.color }}">
+                </p>
                 <p><strong>Размер:</strong>
                     <span v-if="!isProductEditing[product.id]">{{ product.data.size }}</span>
+                    <br>
                     <input v-if="isProductEditing[product.id]" v-model="product.data.size"
                            value="{{ product.data.size }}">
                 </p>
