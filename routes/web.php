@@ -23,4 +23,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware(['auth'])->group(function () {
     Route::get('/get-products', [Api\ProductController::class, 'getList']);
     Route::get('/get-permission', [Api\UserPermissionController::class, 'checkPermission']);
+    Route::post('/products',[ProductController::class, 'store']);
 });
