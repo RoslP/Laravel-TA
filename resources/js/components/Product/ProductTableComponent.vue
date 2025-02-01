@@ -1,6 +1,9 @@
 <script>
+import CrudProductComponent from "./CrudProductComponent.vue";
+
 export default {
     name: "ProductTableComponent",
+    components: {CrudProductComponent},
     data() {
         return {
             products: [],
@@ -64,6 +67,7 @@ export default {
 <template>
     <div v-if="isAdmin"><h1>Вы админ</h1> <h2>и можете редактировать категорию товара</h2></div>
     <div v-if="!isAdmin&&isAdmin!==null"><h1>Вы НЕ админ</h1> <h2>категори менять нельзя</h2></div>
+    <crud-product-component></crud-product-component>
     <div class="product-cards">
         <div class="product-card" v-for="product in products" :key="product.id">
             <img :src="product.url_image" alt="Product image" class="product-image">
