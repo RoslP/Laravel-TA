@@ -8,7 +8,7 @@ class ProductService
 {
     public function getAvailableProducts()
     {
-        return Product::where('status', 'available')
+        return Product::available()
             ->select(['id', 'article', 'name', 'status', 'data', 'url_image'])
             ->get();
     }
